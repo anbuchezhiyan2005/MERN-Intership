@@ -1,0 +1,135 @@
+file.js: 
+
+const express = require('express')
+const exp_handlebars = require('express-handlebars')
+const bodyParser = require('body-parser')
+
+const file = express()
+const db = require('./database')
+
+file.engine('hbs', 
+    exp_handlebars.engine( {
+        layoutsDir : 'layoutFolder/',
+        defaultLayout : 'mainLayout',
+        extname : 'hbs'
+    })
+)
+
+file.set('view engine', 'hbs')
+file.set('views', 'layoutFolder')
+file.use(bodyParser.urlencoded({extended : true}))
+
+file.get('/', async (req, res) => {
+    let database = await db.getDatabase();
+    const collection =database.collection('myCollection')
+    // await collection.insertOne({Name : 'Adhi', Roll : 5})
+    const cursor = collection.find({})
+    let datas = await cursor.toArray()
+    const message = 'data from collection'
+    let msg = ''
+    if(req.query.status === '1') {
+        msg ='Form Data added successfully!'
+    }
+    else {
+        msg = 'Form Data cannot be added'
+    }
+
+    console.log('The datas are: ', datas)
+    res.render('mainLayout', {message, msg, datas})
+})
+
+file.post('/form', async(req, res)=> {
+    const database = await db.getDatabase();
+    const collection = database.collection('myCollection');
+    const data = {Name : req.body.ename, Roll : req.body.eid}
+    await collection.insertOne(data)
+    res.redirect('/?status=1')
+})
+file.listen(8000, ()=> {
+    console.log('Listening on port 8000...')
+})
+
+=======================================================================================
+
+database.js:
+
+const mongodb = require('mongodb')
+const mongoClient = mongodb.MongoClient
+
+let database;
+
+async function getDatabase() {
+    const client = await mongoClient.connect('mongodb://127.0.0.1:27017')
+
+    database = client.db('MERN')
+
+    if(database) {
+        console.log('Database connected successfully')
+    }
+
+    else {
+        console.log('Connection not established!!')
+    }
+
+    return database
+}
+
+module.exports = {getDatabase}
+
+====================================================================================
+
+mainLayout: 
+
+<!DOCTYPE html>
+<html lang = 'en'>
+    <head>
+        <title>MONGODB CRUD</title>
+    </head>
+    <body>
+        <h1>MONGODB CRUD Example</h1>
+        <p>{{message}}</p>
+        <form action = '/form' method = 'post'>
+            <label for= "">EMP id</label>
+            <input type="text" name = "eid">
+            <label for= "">EMP Name</label>
+            <input type="text" name = "ename">
+            <input type = "submit">
+        </form><br><br>
+        <br><br>
+        <p>{{msg}}</p>
+        <ul>
+            {{#each datas}}
+            <li>{{this.Name}} {{this.Roll}} </li>
+            {{/each}}
+
+        </ul>
+    </body>
+</html>
+====================================================================================================
+
+
+database.js: (part 2)
+
+const mongodb = require('mongodb')
+const mongoClient = mongodb.MongoClient
+
+let database;
+let objectId = mongodb.ObjectId
+
+async function getDatabase() {
+    const client = await mongoClient.connect('mongodb://127.0.0.1:27017')
+
+    database = client.db('MERN')
+
+    if(database) {
+        console.log('Database connected successfully')
+    }
+
+    else {
+        console.log('Connection not established!!')
+    }
+
+    return database
+}
+
+module.exports = {getDatabase, objectId}

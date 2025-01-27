@@ -1,0 +1,127 @@
+File.js code: (part 1)
+
+const express = require('express')
+const exp_handlebars = require('express-handlebars')
+
+const file = express()
+
+file.engine('hbs', 
+    exp_handlebars.engine( {
+        layoutsDir : 'layoutFolder/',
+        defaultLayout : 'mainLayout',
+        extname : 'hbs'
+    })
+)
+
+file.set('view engine', 'hbs')
+file.set('views', 'layoutFolder')
+
+file.get('/', (req, res) => {
+    const message = 'text message!'
+    res.render('mainLayout', {message})
+})
+
+file.listen(1000, ()=> {
+    console.log('Listening on port 1000...')
+})
+
+==========================================================================================
+
+mainLayout code: (part 1)
+
+<!DOCTYPE html>
+<html lang = 'en'>
+    <head>
+        <title>MONGODB CRUD</title>
+    </head>
+    <body>
+        <h1>MONGODB CRUD Example</h1>
+        <p>{{message}}</p>
+    </body>
+</html>
+
+=========================================================================================
+
+file.js: (part 2)
+
+const express = require('express')
+const exp_handlebars = require('express-handlebars')
+const bodyParser = require('body-parser')
+
+const file = express()
+const db = require('./database')
+
+file.engine('hbs', 
+    exp_handlebars.engine( {
+        layoutsDir : 'layoutFolder/',
+        defaultLayout : 'mainLayout',
+        extname : 'hbs'
+    })
+)
+
+file.set('view engine', 'hbs')
+file.set('views', 'layoutFolder')
+
+file.get('/', async (req, res) => {
+    let database = await db.getDatabase();
+    const collection =database.collection('myCollection')
+    await collection.insertOne({Name : 'Adhi', Roll : 5})
+    const cursor = collection.find({})
+    let datas = await cursor.toArray()
+    const message = 'data from collection'
+    console.log('The datas are: ', datas)
+    res.render('mainLayout', {message, datas})
+})
+
+file.listen(8000, ()=> {
+    console.log('Listening on port 8000...')
+})
+
+===========================================================================================================
+
+database.js: (part 2)
+
+const mongodb = require('mongodb')
+const mongoClient = mongodb.MongoClient
+
+let database;
+
+async function getDatabase() {
+    const client = await mongoClient.connect('mongodb://127.0.0.1:27017')
+
+    database = client.db('MERN')
+
+    if(database) {
+        console.log('Database connected successfully')
+    }
+
+    else {
+        console.log('Connection not established!!')
+    }
+
+    return database
+}
+
+module.exports = {getDatabase}
+
+=============================================================================================================
+
+mainLayout: (part 2)
+
+<!DOCTYPE html>
+<html lang = 'en'>
+    <head>
+        <title>MONGODB CRUD</title>
+    </head>
+    <body>
+        <h1>MONGODB CRUD Example</h1>
+        <ul>
+            {{#each datas}}
+            <li>{{this.Name}} {{this.Roll}} </li>
+            {{/each}}
+
+        </ul>
+        <p>{{message}}</p>
+    </body>
+</html>
+

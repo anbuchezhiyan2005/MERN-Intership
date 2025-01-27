@@ -1,0 +1,295 @@
+const message = 'Hello world' 
+console.log(message)
+
+// // Update header text
+// document.querySelector('#header').innerHTML = message
+
+const myMessage = 'Hello world'
+console.log("my data is: ", myMessage)
+
+const Name = 'Anbu'
+const Roll = '013'
+
+//Hoisting concept (system has declared it using var automatically)
+Age = 19
+
+//template literal
+console.log(`My name is: ${Name} and my Roll.no is ${Roll}`)
+
+var myName = 'Anbu'
+function disp() {
+  myName = 'anbu'
+  console.log('scope inside the function', myName)
+
+  if(true)
+}
+
+=========================================================
+
+var myName = 'Anbu'
+function disp() {
+  var myName = 'anbu'
+  console.log('scope inside function: ', myName)
+  if(true) {
+    myName = 'ANBU'
+    console.log('scope inside block: ', myName)
+  }
+}
+disp()
+console.log('global scope: ', myName)
+
+
+const age = 18 // global variable
+
+function Age() {
+    const age = 19 // local function variable
+    console.log('scope inside function: ', age)
+    if(true) {
+        const age = 20 // local block variable
+        console.log('scope inside block: ', age)
+    }
+}
+
+Age()
+
+console.log('scope outside function: ', age)
+
+====================================================================
+
+const person = {
+    name : 'Anbu',
+    Roll : '013'
+}
+
+console.log(person) //before address based editing
+
+person.name = 'Anbuchezhiyan'
+person.Roll = '23AD013'
+
+console.log(person) //after address based editing
+
+const marks = [25, 50, 75, 100]
+console.log(marks) //before editing using index
+//internally, it is stored as:
+
+/* {
+    0 : 25
+    1 : 50
+    2 : 75
+    3 : 100
+}
+*/
+
+marks[0] = 30;
+
+console.log(marks) //after editing using index
+
+===========================================================
+
+const a = 'abc' //single line string with single quotation
+const b = "abc" //single line string with double quotation
+const c = `abcdefg 
+hijklmn` //multi line string with template literal
+console.log(a)
+console.log(b)
+console.log(c)
+
+============================================================
+
+a = 12 //int value
+b = 12345678900987654321n //it dosen't fit into the int datatype size so we add 'n' at the end, and it becomes long int
+// n -> not a regular number, and therefore long int (or) big int
+console.log(a)
+console.log(b)
+
+=================================================================
+
+a = 10
+b = 0
+c = a / b
+d = Infinity
+console.log(c)
+console.log(d)
+
+===================================================================
+
+a = 5 < Infinity //returns value in boolean
+b = NaN
+
+console.log(a)
+console.log(b)
+
+=================================================================
+
+a = "hai" * 3 // operations between different datatypes or mismatching datatypes gives NaN
+
+console.log(a)
+
+=================================================================
+
+let a = false
+let b = true
+
+console.log(a)
+console.log(b)
+console.log(typeof(a))
+console.log(typeof b)
+
+=======================================================================
+
+let a = null //associated only with object type of data
+console.log(a)
+console.log(typeof a)
+
+=====================================================================
+
+let a //on declaration, the value is undefined
+console.log(a)
+console.log(typeof a) //type of the value is also undefined
+
+========================================================================
+
+JS Dtypes:
+
+number
+    =>NaN
+    =>undefined
+    =>big int
+    =>Infinity
+string
+object
+null
+array
+
+=======================================================================
+
+a = 1
+b = '1'
+console.log(a==b) //checks only the value but not the dtype
+console.log(a===b) //checks the value and the dtype
+
+a = 1
+b = '1'
+console.log(a!=b) //checks only the value but not the dtype for mismatch
+console.log(a!==b) //checks the dtype if mismatch
+
+a = 2
+b = 4
+console.log(a**b) //a to the power of b
+
+========================================================================
+
+let a = [1, 2, 3,"anbu", 4]
+let b = [100, 200, 300]
+let c = "hello"
+a.push(b, c)
+let d = {
+    name : "Anbu",
+    age : 19
+}
+
+a.push(d) // pushing the datas to the end of the array
+
+a[5].push(400)
+
+console.log(a)
+
+a.unshift(10, 20, 30) // adding the datas to the beginning of the array (in the same order we enter)
+
+console.log(a)
+
+res1 = a.shift() // retrieves the first element in the array
+res2 = a.pop() // retrieves the last element in the array
+
+console.log(res1, res2, a)
+
+
+======================================================================
+
+let a = [1, 2, 3,"anbu", 4]
+let b = [100, 200, 300]
+let c = "hello"
+a.push(b, c)
+console.log("length before deletion: ", a.length)
+console.log("Array: ", a)
+res = delete a[1] //it retrieves the value from the specified location and replaces it with a message in the array
+console.log("length after deletion: ", a.length)
+console.log("Array: ", a)
+
+========================================================================
+
+let a = [10, 20, 30]
+sum = 0
+
+for(i = 0; i < a.length; i++)
+sum += a[i]
+
+console.log(sum)
+
+
+
+n = 123
+num = 0
+while(n !== 0) {
+    r = n % 10
+    num = (num * 10) + r
+    n = Math.floor(n / 10)
+}
+
+console.log(num)
+
+======================================================================
+
+a = [10, 20, 30]
+
+for(let data of a) // enhanced for loop
+console.log(data)
+
+a.splice(1, 2, "hello") // replaces the space from ist indes to 2nd index with the value "hello"
+console.log(a)
+b = [10, 20, 30, 40, 50]
+res = b.slice(1)
+console.log(res) // slicing only the first element and gives the remaining elements fully
+res = b.slice(1, 3) // slicing from 1st index to 2nd index elements
+console.log(res)
+
+========================================================================
+
+let person = [{ // collection of objects
+    Name : "Anbu",
+    Age : 19
+},
+{
+    Name : "Gowtham",
+    Age : 19
+},
+{
+    Name : "Adhithiya",
+    Age : 19
+}]
+
+for(let a of person)
+console.log(a.Name)
+
+===========================================================================
+
+let person = [{ // collection of objects
+    Name : "Anbu",
+    Age : 19
+},
+{
+    Name : "Gowtham",
+    Age : 19
+},
+{
+    Name : "Adhithiya",
+    Age : 19
+}]
+
+for(let key in person) // it gives the index of all the keys included
+console.log(key, " ", person[key]) // the key values are assigned using square brackets, dot expression gives us undefined values
+
+
+===============================================================================
+
+

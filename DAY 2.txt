@@ -1,0 +1,398 @@
+let person = {
+    name : 'Anbu',
+    age : '19'
+}
+
+let {name, age} = person // include the attribute names directly
+console.log(name, " ", age)
+
+let student = {
+    n : "Anbu",
+    a : 19
+}
+
+let {'n' : Name, 'a' : Age} = student // replacing the attributes with relevant names
+console.log(name, " ", Age)
+
+
+==========================================================================================
+
+let student = {
+    n : "Anbu",
+    a : 19
+}
+
+let {n : Name, a : Age, city = "CBE"} = student // we can also include our own attributes even if they aren't present in the object 
+console.log(Name, " ", Age, " ", city)
+
+=============================================================================================
+
+
+let student = {
+    name : "Anbu",
+    age : 19,
+    city : "CBE",
+}
+
+let {name, ...etc} = student // if we want to get the attributes automatically without assigning, give ...{some_variable_name} and access them
+console.log(name, etc)
+
+================================================================================================
+
+// REST OPERATOR
+
+function add(...num) { // send any amount of data with the syntax ...{some_variable_name}
+    sum = 0
+    for(i = 0; i < num.length; i++) // the passsed arguments are stored in the array with {variable_name} entered in the function argument
+    sum += num[i]
+    
+    console.log(sum)
+}
+
+add(1)
+add(1, 2)
+add(1, 2, 3, 4)
+
+===============================================================================================
+
+let a = [1, 2, 3, 4]
+let b = [...a, 5, 6, 7, 8]
+console.log(b) // using the rest operator, we can add the values in the 'a' array to the 'b' array
+
+let c = [a, 5, 6, 7, 8]
+
+console.log(c) // if we ignore the rest operator, it includes the whole 'a' array as an element in the 'c' array
+
+=================================================================================================
+
+//using push() method
+
+let a = [5, 6, 7, 8]
+let b = [1, 2, 3, 4]
+b.push(...a) // pushing the elements in 'a' into 'b' individually
+console.log(b)
+let c = [1, 2, 3, 4]
+c.push(a) // pushing the whole 'a' array into 'c'
+console.log(c)
+
+================================================================================================
+
+function f1() { // no argument no return type (type I)
+    console.log("Hello")
+}
+
+function f2(...a) { // with argument no return type (type II)
+    console.log(a)
+}
+
+function f3() { // no argument with return type (type III)
+    return 10 + 20
+}
+
+function f4(...a) { // with argument with return type (type IV)
+    return a
+}
+
+f1() //type I call
+f2(10, 20) // type II call
+console.log(f3()) //type III call
+console.log(f4(10, 20)) // type IV call
+
+=================================================================================================
+
+function f1(...a, b) { // rest operator should only be included as the last parameter
+    return a
+}
+
+f1(1, 2, 3, 4, 5)
+
+
+
+function f2(b, ...a) { //rest operator as the last parameter
+    return a
+}
+
+console.log(f2(1, 2, 3, 4, 5))
+
+=================================================================================================
+
+
+let a = [1, 2, 3, 4]
+
+let [p, q, r, s] = a // array destructuring
+
+console.log(p, q, r, s)
+
+let [one, , , four] = a // destructuring only the specific elements and leaving the other elements blank
+
+console.log(one, four)
+
+=================================================================================================
+
+let a = [1, 2, 3, 4, 5 ,6 , 7, 8]
+
+let [p, q, ...etc] = a // destructuring using rest operator
+
+console.log(p, q, etc)
+console.log(typeof etc) // data type of the rest operator
+let [r1, r2] = etc // destructuring the rest operator elements (type = object) 
+
+console.log(r1, r2)
+
+===============================================================================================
+
+//closure property of functions
+//TYPE I
+
+function outer() { //outer function
+    function inner() { // nested inner function
+        console.log("inner function")
+    }
+    
+    console.log("outer function")
+    return inner // returning the name of the nested function to the outer function call
+}
+
+inFunction = outer() // the inner function is now stored in the variable
+inFunction() // the inner function can be called explicitly even if the outer function is not called
+
+
+
+//closure property of functions
+//TYPE II
+
+function outer() { //outer function
+    console.log("outer function")
+    
+    return function inner() { // directly returning the inner function definition, either include the function keyword, or do the entire syntax for function definition and return it
+        console.log("inner function")
+    }
+}
+
+inFunction = outer() // the inner function is now stored in the variable
+inFunction() // the inner function can be called explicitly even if the outer function is not called
+
+===============================================================================================
+
+//function declaration: the functions are declared/called before the function definition (hoisting)
+
+inFunction = outer() 
+inFunction() 
+
+function outer() { 
+    console.log("outer function")
+    
+    return function inner() { 
+        console.log("inner function")
+    }
+}
+
+
+
+
+//function expression: they don't support hoisting concept
+
+let myFunction = function outer() { // assigning a function to a variable
+    console.log("outer function")
+    
+    return function inner() { 
+        console.log("inner function")
+    }
+}
+
+inFunction = myFunction() // we call the assigned function with the help of the variable
+inFunction() 
+
+===============================================================================================
+
+// ARROW FUNCTIONS
+
+let f1 = ()=> { // arrow function, no argument no return type (type I)
+    console.log("hello")
+}
+
+let f2 = (a, b)=> { // arrow function, with argument no return type (type II)
+    console.log(a + b)
+}
+
+let f3 = ()=> { // arrow function, no argument with return type (type III)
+    return "hello"
+}
+
+let f4 = (a, b)=> { // arrow function, with argument with return type (type IV)
+    return a + b
+}
+
+f1() // TYPE I CALL
+f2(1, 2) // TYPE II CALL
+console.log(f3()) // TYPE III CALL
+console.log(f4(1, 2)) // TYPE IV CALL
+
+================================================================================================
+
+//CALL BACK FUNCTIONS
+
+//SYNC TYPE: there is no delay implemented and so the output occurs synchronously
+
+function getFunction(trueFunction, falseFunction, name) { // get the function arguments and any other values also
+    if(name === "Anbu")
+        trueFunction() //calling the argument functions
+    else
+        falseFunction() // calling the argument functions
+    
+    console.log('function executed successfully!') 
+}
+
+function Approve() { // the definition for argument function 1
+    console.log('Pass')
+}
+
+function Decline() { // the definition for argument function 2
+    console.log('Fail')
+}
+
+getFunction(Approve, Decline, "anbu") // calling the main function (getFunction()) and passing the argument functions (Approve(), Decline()) in it, along with a string
+
+
+
+
+
+
+//ASYNC TYPE: a delay is implemented and the output occurs asynchronously
+
+function getFunction(trueFunction, falseFunction, name) { // get the function arguments and any other values also
+    setTimeout( ()=> { // this setTimeout function will get a function argument (arrow function in this case) and a delay time (in ms)
+        if(name === "Anbu")
+            trueFunction() //calling the argument functions
+        else
+            falseFunction() // calling the argument functions
+    }, 2000)
+    
+    console.log('the status is: ') // this statement gets printed first as there is no delay
+}
+
+function Approve() { // the definition for argument function 1
+    console.log('Pass')
+}
+
+function Decline() { // the definition for argument function 2
+    console.log('Fail')
+}
+
+getFunction(Approve, Decline, "anbu") // calling the main function (getFunction()) and passing the argument functions (Approve(), Decline()) in it, along with a string
+
+==================================================================================================================
+
+//PROMISE STATES:
+
+//PENDING STATE: when trying to take data from the backend and the process is pending
+//RESOLVED STATE: when the data is retrieved successfully from the backend
+//REJECTED STATE: any error in the process of retrieveing the data from the backend, the process is rejected
+
+let status = new Promise((resolved,rejected)=> { //syntax to implement promise function (argument functions for resolved state and rejected state to be included)
+    name = "anbu"
+    setTimeout( ()=> {
+        if(name === "Anbu") {
+            resolved(name) // resolved function is called with name as argument
+        }
+        else {
+            rejected('Data not recieved (or) incorrect data') // the rejected function is called with a custom error message
+        }
+    }, 2000)
+})
+
+status // the variable to which the promise function has been assigned
+.then((name)=> { 
+    console.log('Data recieved: ', name) // the the resolved function gives the name as input here and prints the message
+})
+
+.catch((errr)=> {
+  console.log('An error occured: ', errr) // the rejected function will feed the error message here
+}) 
+ 
+.finally(()=> {
+    console.log('The code is executed successfully') // the finally block will execute at any case
+})
+
+
+
+
+// EXAMPLE PROGRAM: 
+
+function getStatus(Recieved, Waiting, Pending, name = null, key = null) {
+    return new Promise((Approved, Declined)=> {
+        
+        setTimeout( ()=> {
+            if(name !== null && key !== null) {
+                Recieved()
+                Pending()
+                setTimeout( ()=> {
+                    if(name === key) {
+                        Approved({name, key})
+                    }
+                    else {
+                        Declined('The data does not match the key!')
+                    }
+                }, 3000)
+            }
+            else {
+                Waiting()
+            }
+        }, 1000)
+    })
+}
+
+function Recieve() {
+    console.log('Data Recieved!')
+}
+
+function Pending() {
+    console.log('Data is being validated, please wait...')
+}
+
+function Waiting() {
+    console.log('Data not recieved!')
+}
+
+getStatus(Recieve, Waiting, Pending, "12345", "12345")
+.then(({name, key})=> {
+    console.log(`Data:'${name}' is matching with the key:'${key}'`)
+})
+
+.catch((errmsg)=> {
+    console.log('Error: ', errmsg)
+})
+
+.finally(()=> {
+    console.log('Executed successfully!')
+})
+
+
+============================================================================================
+
+//to avoid using .then, .catch and .finally, this is an alternate way using async function
+
+const res = (name) => {
+    return new Promise((resolved, rejected)=> {
+        setTimeout(()=> {
+            if(name === "Anbu")
+                resolved(name)
+            else
+                rejected(new Error('Data not recieved!'))
+        }, 2000)
+    })
+}
+
+const run = async() => {
+    try{
+        const name = await res("anbu")
+        console.log('Data recieved: ', name)
+    }
+    catch(err) {
+        console.log(err.stack)
+    }
+}
+
+run()
+
+==============================================================================================

@@ -1,0 +1,61 @@
+db.products.insertMany([
+...   {  "name": "Item A", "price": 50 },
+...   {  "name": "Item B", "price": 75 },
+...   {  "name": "Item C", "price": 100 },
+...   {  "name": "Item D", "price": 150 },
+...   {   "name": "Item E", "price": 200 }
+... ])
+
+$lt: Less than
+db.products.find({ price: { $lt: 100 } })
+
+
+$lte: Less than or equal to
+db.products.find({ price: { $lte: 100 } })
+
+
+
+$gt: Greater than
+db.products.find({ price: { $gt: 100 } })
+
+
+$gte: Greater than or equal to
+db.products.find({ price: { $gte: 100 } })
+
+$eq: Equal to
+db.products.find({ price: { $eq: 100 } })
+
+$ne: Not equal to
+db.products.find({ price: { $ne: 100 } })
+
+
+
+db.products.find({
+  $and: [{ price: { $gte: 50 } }, { category: "Electronics" }]
+});
+
+
+$or: Match at least one condition
+Find products with a price less than 75 or greater than 150.
+
+
+db.products.find({
+  $or: [{ price: { $lt: 75 } }, { price: { $gt: 150 } }]
+});
+
+
+
+$nor: Match none of the conditions
+Find products with a price neither less than 75 nor greater than 150.
+
+db.products.find({
+  $nor: [{ price: { $lt: 75 } }, { price: { $gt: 150 } }]
+});
+
+
+$not: Negates the filter condition
+Find products with a price not greater than or equal to 100
+
+db.products.find({
+  price: { $not: { $gte: 100 } }
+});

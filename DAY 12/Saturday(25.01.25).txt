@@ -1,0 +1,99 @@
+database.js:
+
+const mgoose = require('mongoose')
+
+function getDatabase() {
+    mgoose.connect('mongodb://127.0.0.1:27017/demo')
+    .then(()=> {
+        console.log('Database connected Successfully!')
+    })
+    .catch(()=> {
+        console.log('Database connection error!'
+        )
+    })
+}
+
+module.exports = {getDatabase}
+
+==========================================================================================
+
+app.js: 
+
+const express = require('express')
+const exhbs = require('express-handlebars')
+const db = require('./database')
+const StudentModel = require('./models/studentModel')
+
+const trial = express()
+db.getDatabase()
+
+trial.engine('hbs', 
+    exhbs.engine({
+        layoutsDir : "pages/",
+        defaultLayout : "main",
+        extname : "hbs"
+    })
+)
+
+trial.set('view engine', 'hbs')
+trial.set('views', 'pages')
+
+trial.get('/', async(req, res) => {
+    let msg = 'testing'
+    let data = await StudentModel.find({})
+    if(req.query.status == '1') {
+        msg = 'Form Data inserted Successfully!'
+    }
+    res.render('main', {msg, data})
+})
+
+trial.post('/form', (req, res) => {
+    const datas = {Name : req.body.studentName, ID : req.body.studentID}
+    const newStudentDoc = new StudentModel(datas)
+    newStudentDoc.save()
+    res.redirect('/?status=1')
+})
+
+trial.listen(5000, () => {
+    console.log('listening to port 5000....')
+})
+
+==============================================================================================
+
+studentModel.js: 
+
+const mgoose = require('mongoose')
+const studentSchema = mgoose.Schema( {
+    Name : String,
+    ID : Number
+})
+
+const stdModel = mgoose.model('StudentModel', studentSchema, 'StudentModel')
+
+module.exports = stdModel
+
+====================================================================================================
+
+main.hbs: 
+
+<!DOCTYPE html>
+<html lang = 'en'>
+    <head>
+        <title>DEMO</title>
+    </head>
+    <body>
+        <h2>{{msg}}</h2>
+        <form action = '/form' method="post">
+            <label for="">Student Name</label>
+            <input type="text" name="studentName">
+            <label for="">Student ID</label>
+            <input type="text" name="studentID">
+        <input type="submit">
+        </form> 
+        <ul>
+            {{#each data}}
+                <li>Student Name: {{this.Name}} || Student ID: {{this.ID}}</li>
+            {{/each}}
+        </ul>
+    </body>
+</html>

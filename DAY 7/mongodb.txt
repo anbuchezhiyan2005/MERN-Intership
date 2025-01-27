@@ -1,0 +1,92 @@
+show dbs //displying all the existing db
+
+use mern //creating your own db
+
+db.myCollection.insertOne(name : 'sai', roll : 12) //insert a data
+
+db.myCollection.insertOne(name : 'kumar', roll : 13, details : {salary : 50000, role : 'debugger'}}) // insert nested data in another
+
+db.pract.insertMany([{ name :'somu',rollNo: 1,details:{cls:'ai-ds',age:19}},{name : 'romu',rollNo:2,details:{cls:'cse',age:20}},{name:'edwin',rollNo:3,details:{cls:'ece',age:30}}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6790789d2f69de50640d8190'),
+    '1': ObjectId('6790789d2f69de50640d8191'),
+    '2': ObjectId('6790789d2f69de50640d8192')
+  }
+}
+
+db.myCollection.find() // displays all the data in my collection
+
+what does find() returns - it returns cursor object(
+
+db.myCollection.findOne() // displays the first data 
+
+db.myCollection.find().toArray() // displays the datas as an array
+
+db.myCollection.find().forEach((d)=>print(d)) // displays each data in iterations
+to fetch large volume of datas from a collection 
+ - db.collection.find().toArray()
+since find() return limited
+find retrieves one by one
+whereas find().toArray() - retrieves in one shot.
+
+also using iteration -  find().forEach((d) => print("The data :"))
+
+filtering - db.collection.find(<filtering key> : value)
+
+searching in nested document - 
+	db.collection.find(details.role : value) ---- throws syntax errors
+	db.collection.find('details.role' : value)
+
+Updating the document datas
+
+UpdateOne: If duplicate present means it update the first one.
+
+stu1> db.students.updateOne({rollNo : 12},{$set:{name:"RamCharan"}}
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+If nested updation means we need to give the field within the ' ' or " "
+stu1> db.students.updateOne({rollNo : 12},{$set:{'details.salary':1000}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0  
+}
+
+UpdateMany
+
+stu1> db.students.updateMany({rollNo:12} , {$set:{name:"Revati",'details.role':'DVP'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}‭
+
+DeleteOne
+
+stu1> db.students.deleteOne({rollNo : 12})
+{ acknowledged: true, deletedCount: 1 }
+
+deleteMany
+
+stu1> db.students.deleteMany({roolNo : 12})
+{ acknowledged: true, deletedCount: 1 }
+
+
+creating a collection using a function
+
+stu1> db.createCollection({pract},{})
+ReferenceError: pract is not defined
+
+stu1> db.createCollection('pract',{})
+{ ok: 1 }
